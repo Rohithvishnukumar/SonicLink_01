@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # import pyttsx3, datetime, wikipedia, webbrowser, os, pyautogui
 
 

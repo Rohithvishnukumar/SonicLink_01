@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voice Assistant</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      background: #fffffff7;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+    }
+
+    .container {
+      position: absolute;
+      text-align: center;
+      z-index: 10;
+      margin-top: 70vh;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 50%;
+      border: none;
+      background-color: #1e6786;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      height: 80px;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    #status, #response {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: black;
+    }
+
+    .wave-wrapper {
+      position: relative;
+      height: 24rem;
+      width: 24rem;
+      overflow: hidden;
+      border-radius: 50%;
+      background-color: #EFF1F6;
+    }
+
+    .wave {
+      position: absolute;
+      top: 70%;
+      left: -50%;
+      width: 48rem;
+      height: 48rem;
+      background-color: #2C4F86;
+      border-radius: 35%;
+      animation-name: waves;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .wave.one {
+      animation-duration: 7000ms;
+      opacity: 0.4;
+    }
+
+    .wave.two {
+      background-color: #70C7CB;
+      animation-duration: 9000ms;
+    }
+
+    .wave.three {
+      animation-duration: 12000ms;
+    }
+
+    @keyframes waves {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="color: black;">Ask SonicLink</h1>
+  <div class="wave-wrapper">
+    <div class="wave one"></div>
+    <div class="wave two"></div>
+    <div class="wave three"></div>
+  </div>
+
+  <div class="container">
+
+    <button onclick="startRecognition()" >Speak</button>
+    <p id="status"></p>
+    <p id="response"></p>
+  </div>
+
+  <script>
+    function startRecognition() {
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-IN';
+      recognition.interimResults = false;
+      recognition.continuous = false;
+
+      document.getElementById("status").innerText = "Listening...";
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const speechResult = event.results[0][0].transcript;
+        document.getElementById("status").innerText = `You said: "${speechResult}"`;
+
+        fetch('/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: speechResult })
+        })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("response").innerText = data.response;
+          if (data.followUp) {
+            setTimeout(() => {
+              startRecognition();
+            }, 3000);
+          }
+        });
+      };
+
+      recognition.onerror = function() {
+        document.getElementById("status").innerText = "Error occurred. Try again.";
+      };
+    }
+  </script>
+</body>
+</html>

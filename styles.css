@@ -1,0 +1,88 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #2854ba;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+}
+
+.container {
+  position: absolute;
+  text-align: center;
+  z-index: 10;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  background-color: #38bdf8;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0ea5e9;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+/* Wave animation styles */
+.wave-wrapper {
+  position: relative;
+  height: 24rem;
+  width: 24rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #EFF1F6;
+}
+
+.wave {
+  position: absolute;
+  top: 70%;
+  left: -50%;
+  width: 48rem;
+  height: 48rem;
+  background-color: #2C4F86;
+  border-radius: 35%;
+  animation-name: waves;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.wave.one {
+  animation-duration: 7000ms;
+  opacity: 0.4;
+}
+
+.wave.two {
+  background-color: #70C7CB;
+  animation-duration: 9000ms;
+}
+
+.wave.three {
+  animation-duration: 12000ms;
+}
+
+@keyframes waves {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}

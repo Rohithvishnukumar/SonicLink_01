@@ -105,7 +105,7 @@ function startRecognition() {
     };
   
     recognition.onerror = function() {
-      document.getElementById("status").innerText = "❌ Error occurred. Try again.";
+      document.getElementById("status").innerText = "Error occurred. Try again.";
     };
   }
   
